@@ -1,6 +1,7 @@
 package org.hunterkilltree.app.respository;
 
 import com.speedment.jpastreamer.application.JPAStreamer;
+import com.speedment.jpastreamer.projection.Projection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.hunterkilltree.app.model.Film;
@@ -25,7 +26,7 @@ public class FilmRepository {
     }
 
     public Stream<Film> paged(long page, short minLength) {
-        return jpaStreamer.stream(Film.class)
+        return jpaStreamer.stream(Projection.select(Film$.filmId, Film$.title, Film$.length))
                 .filter(Film$.length.greaterThan(minLength))
                 .sorted(Film$.length)
                 .skip(page * PAGE_SIZE)
