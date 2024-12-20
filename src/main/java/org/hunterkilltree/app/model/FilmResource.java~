@@ -1,0 +1,33 @@
+package org.hunterkilltree.app.model;
+
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import org.hunterkilltree.app.respository.FilmRepository;
+
+import java.util.Optional;
+
+@Path("/local")
+public class FilmResource {
+
+    @Inject
+    FilmRepository filmRepository;
+
+    @GET
+    @Path("/films/{filmId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getFilms(short filmId) {
+        Optional<Film> film = filmRepository.getFilm(filmId);
+        return film.isPresent() ? film.get().getTitle() : "No matching film";
+    }
+
+    @GET
+    @Path("/films/search/{pages}/{minLength}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String paged() {
+        return "All films";
+    }
+
+}
